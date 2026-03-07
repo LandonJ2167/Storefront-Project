@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <title>{% block title %}Flask App{% endblock %}</title>
+
+        <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+    </head>
+    <body>
+        <header class="navbar">
+            <div class="container navbar-inner">
+                <div class="brand">
+                    <a class="brand-link" href="{{ url_for('home') }}">MyFlaskApp</a>
+                </div>
+
+                <nav class="nav">
+                    <a class="nav-link {% if request.endpoint == 'home' %}active{% endif %}" href="{{ url_for('home') }}">Home</a>
+                    <a class="nav-link {% if request.endpoint == 'rsvp' %}active{% endif %}" href="{{ url_for('rsvp') }}">RSVP</a>
+                    <a class="nav-link {% if request.endpoint == 'rsvps' %}active{% endif %}" href="{{ url_for('rsvps') }}">View RSVPs</a>
+                </nav>
+            </div>
+        </header>
+
+        <main class="container">
+            {% block content %}{% endblock %}
+        </main>
+
+    </body>
+</html>
