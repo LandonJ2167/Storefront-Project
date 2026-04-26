@@ -1,5 +1,5 @@
 from flask import Flask, render_template, request, redirect, url_for
-from flask_sqlalchemy import SQLAlchemy
+from models import db, User, Product, Order
 
 app = Flask(__name__)
 
@@ -9,7 +9,24 @@ app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///storefront.db"
 app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
 
 # Database Setup
-db = SQLAlchemy(app)
+db.init_app(app)
+
+with app.app_context():
+    db.create_all()
+
+    
+    products = [
+        Product(name="Keyboard", description="keyboard", price=99.99, stock=10),
+        Product(name="Mouse", description="mouse", price=49.99, stock=25),
+        Product(name="Monitor", description="monitor", price=199.99, stock=5),
+        Product(name="Laptop", description="laptop", price=1999.99, stock=2),
+    ]
+
+    for product in products:
+        if not Product.query.filter_by(name=product.name).first():
+            db.session.add(product)
+
+    db.session.commit()
 
 
 # Home Page
@@ -20,7 +37,8 @@ def home():
 # Products Page
 @app.route("/products")
 def products():
-    return render_template("products.html")
+    products = Product.query.all()
+    return render_template("products.html", products=products)
 
 # Detailed Product Page
 @app.route("/product/<int:id>")

@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Products</title>
+</head>
+<body>
+
+<h1 style="text-align: center;">Products</h1>
+
+<div style="display: flex; flex-wrap: wrap; gap: 20px; justify-content: center;">
+
+    {% for product in products %}
+    <a href="{{ url_for('product_detail', id=product.id) }}" style="text-decoration: none; color: inherit;">
+        
+        <div style="border: 4px solid #6b6b6b; padding: 10px; width: 200px;">
+            
+            <h2 style="color: lightblue;"">{{ product.name }}</h2>
+            
+            <p>{{ product.description }}</p>
+            
+            <p><strong>${{ product.price }}</strong></p>
+            
+            <p>Stock: {{ product.stock }}</p>
+
+        </div>
+
+    </a>
+{% endfor %}
+
+</div>
+
+</body>
+</html>
