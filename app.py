@@ -16,7 +16,7 @@ with app.app_context():
 
     
     products = [
-        Product(name="Keyboard", description="keyboard", price=99.99, stock=10),
+        Product(name="Keyboard", description="This is a placeholder description for the keyboard", price=99.99, stock=10),
         Product(name="Mouse", description="mouse", price=49.99, stock=25),
         Product(name="Monitor", description="monitor", price=199.99, stock=5),
         Product(name="Laptop", description="laptop", price=1999.99, stock=2),
@@ -43,7 +43,8 @@ def products():
 # Detailed Product Page
 @app.route("/product/<int:id>")
 def product_detail(id):
-    return render_template("product_detail.html", id=id)
+    product = Product.query.get(id)
+    return render_template("product_detail.html", id=id, product=product)
 
 # Register
 @app.route("/register")
