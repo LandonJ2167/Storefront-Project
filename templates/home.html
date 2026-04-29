@@ -1,12 +1,37 @@
 {% extends "base.html" %}
 
-{% block title %}Home{% endblock %}
-
 {% block content %}
+<div class="card">
+    <h1>Welcome to Byte Supply</h1>
+    <p>Essential Bits, Exceptional Value</p>
+    <p>Browse computers, phones, and more tech products.</p>
+</div>
 
-<section class="flex flex-col justify-center h-screen">
-    <h1 class="font-bold text-center">Placeholder for home.html</h1>
-    <p class="text-center">For base.html, I simply altered the placeholder we already had to make the sidebar a topbar instead. If we need to redo base.html to not reuse that code or anything else, that's fine</p>
-</section>
+<br>
 
+<h1 style="text-align: center;">Products</h1>
+
+<div style="display: flex; flex-wrap: wrap; gap: 20px; justify-content: center;">
+
+    {% for product in products %}
+    <a href="{{ url_for('product_detail', id=product.id) }}" style="text-decoration: none; color: inherit;">
+        
+        <div class="product-card">
+            
+            <img src="{{ url_for('static', filename=product.image) }}" alt = "{{ product.image }}" width="100" height="50">
+            
+            <h2 style="color: lightblue;"">{{ product.name }}</h2>
+            
+            
+            
+            <p><strong>${{ product.price }}</strong></p>
+            
+            <p>Stock: {{ product.stock }}</p>
+
+        </div>
+
+    </a>
+{% endfor %}
+
+</div>
 {% endblock %}

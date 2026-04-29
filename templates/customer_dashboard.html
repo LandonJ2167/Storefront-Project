@@ -1,0 +1,9 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="card">
+    <h2>Customer Dashboard</h2>
+    <p>Welcome, {{ current_user.email }}!</p>
+    <p>This page can later show saved info, order history, cart access, and checkout details.</p>
+</div>
+{% endblock %}

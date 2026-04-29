@@ -1,11 +1,48 @@
 {% extends "base.html" %}
 
-{% block title %}Home{% endblock %}
-
 {% block content %}
+<div class="auth-box">
+    <h2>Create Account</h2>
+    <form method="POST">
+        {{ form.hidden_tag() }}
 
-<section class="flex flex-col justify-center h-screen">
-    <h1 class="font-bold text-center">Placeholder for registration page</h1>
-</section>
+        <div class="form-group">
+            {{ form.email.label }}
+            {{ form.email(class="form-control", placeholder="Enter your email") }}
+            {% for error in form.email.errors %}
+                <small class="error">{{ error }}</small>
+            {% endfor %}
+        </div>
 
+        <div class="form-group">
+            {{ form.password.label }}
+            {{ form.password(class="form-control", placeholder="Create a password") }}
+            {% for error in form.password.errors %}
+                <small class="error">{{ error }}</small>
+            {% endfor %}
+        </div>
+
+        <div class="form-group">
+            {{ form.confirm_password.label }}
+            {{ form.confirm_password(class="form-control", placeholder="Confirm password") }}
+            {% for error in form.confirm_password.errors %}
+                <small class="error">{{ error }}</small>
+            {% endfor %}
+        </div>
+
+        <div class="form-group">
+            {{ form.role.label }}
+            {{ form.role(class="form-control") }}
+        </div>
+
+        <div class="form-group">
+            {{ form.submit(class="btn") }}
+        </div>
+    </form>
+
+    <p class="switch-link">
+        Already have an account?
+        <a href="{{ url_for('login') }}">Login here</a>
+    </p>
+</div>
 {% endblock %}

@@ -1,0 +1,9 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="card">
+    <h2>Manager Dashboard</h2>
+    <p>Welcome, {{ current_user.email }}!</p>
+    <p>This protected page is for managing products, orders, and store information.</p>
+</div>
+{% endblock %}

@@ -9,13 +9,16 @@
     <h1 class="font-bold text-center text-4xl">{{ product.name }}</h1>
     
     <div class="flex gap-200 justify-center pt-30">
-        <p class="text-center pt-30">Image Placeholder</p>
+        <img src="{{ url_for('static', filename=product.image) }}" alt = "{{ product.image }}" width="300">
         <div>
             <p class="text-center pb-30">${{ product.price }}</p>
             <p class="text-center pb-30">Stock: {{ product.stock }}</p>
-            <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
-                Add to Cart
-            </button>
+            
+            {% if current_user.is_authenticated %}    
+                <button>Add to Cart</button>
+            {% else %}
+                <a href="{{ url_for('login') }}">Login to Buy</a>
+            {% endif %}
         </div>
 
         
