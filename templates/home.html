@@ -2,16 +2,16 @@
 
 {% block content %}
 <div class="card">
-    <h1>Welcome to Byte Supply</h1>
-    <p>Essential Bits, Exceptional Value</p>
-    <p>Browse computers, phones, and more tech products.</p>
+    <h1 style="text-align: center; font-family: Georgia, 'Times New Roman', Times, serif;">Welcome to Byte Supply</h1>
+    <p style="text-align: center;">Essential Bits, Exceptional Value</p>
+    <p style="text-align: center;">Browse computers, phones, and more tech products.</p>
 </div>
 
 <br>
 
-<h1 style="text-align: center;">Products</h1>
+<!--<h1 style="text-align: center;">Products</h1>-->
 
-<div style="display: flex; flex-wrap: wrap; gap: 20px; justify-content: center;">
+<div style="display: flex; flex-wrap: wrap; gap: 20px; margin-top: 10px; justify-content: center;">
 
     {% for product in products %}
     <a href="{{ url_for('product_detail', id=product.id) }}" style="text-decoration: none; color: inherit;">
@@ -20,13 +20,20 @@
             
             <img src="{{ url_for('static', filename=product.image) }}" alt = "{{ product.image }}" width="100" height="50">
             
-            <h2 style="color: lightblue;"">{{ product.name }}</h2>
+            <h2 style="color: rgb(0, 143, 190);"">{{ product.name }}</h2>
             
             
             
             <p><strong>${{ product.price }}</strong></p>
             
-            <p>Stock: {{ product.stock }}</p>
+            {% if product.stock == 0 %}
+                <p style="color: red;"><strong>Stock: {{ product.stock }}</strong></p>
+            {% elif product.stock < 5 %}
+                <p style="color: orange;"><strong>Stock: {{ product.stock }}</strong></p>
+            {% else %}
+                <p style="color: green;"><strong>Stock: {{ product.stock }}</strong></p>
+            {% endif %}
+
 
         </div>
 

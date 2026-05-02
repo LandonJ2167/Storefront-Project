@@ -21,6 +21,16 @@ with app.app_context():
         Product(name="Mouse", description="mouse", price=49.99, stock=25, image="mouse.png"),
         Product(name="Monitor", description="monitor", price=199.99, stock=5, image="monitor.png"),
         Product(name="Laptop", description="laptop", price=1999.99, stock=2, image="laptop.png"),
+
+        Product(name="Keyboard2", description="This is a placeholder description for the keyboard", price=99.99, stock=10, image="keyboard.png"),
+        Product(name="Mouse2", description="mouse", price=49.99, stock=0, image="mouse.png"),
+        Product(name="Monitor2", description="monitor", price=199.99, stock=5, image="monitor.png"),
+        Product(name="Laptop2", description="laptop", price=999.99, stock=2, image="laptop.png"),
+
+        Product(name="Keyboard3", description="This is a placeholder description for the keyboard", price=99.99, stock=10, image="keyboard.png"),
+        Product(name="Mouse3", description="mouse", price=49.99, stock=5, image="mouse.png"),
+        Product(name="Monitor3", description="monitor", price=199.99, stock=0, image="monitor.png"),
+        Product(name="Laptop3", description="laptop", price=2999.99, stock=7, image="laptop.png"),
     ]
 
     for product in products:

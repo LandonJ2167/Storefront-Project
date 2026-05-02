@@ -5,28 +5,49 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Byte Supply</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+
+    <script src="https://cdn.tailwindcss.com"></script>
 </head>
 <body>
-    <nav>
-        <div class="nav-left">
-            <a href="{{ url_for('home') }}">Byte Supply</a>
-        </div>
-        <div class="nav-right">
-            <a href="{{ url_for('home') }}">Home</a>
+    <nav class="bg-slate-900 text-white px-6 py-3 flex justify-between items-center shadow-md">
+    
+    <div class="nav-left">
+        <a href="{{ url_for('home') }}" 
+           class="text-lg font-semibold font-serif tracking-wide hover:text-sky-400 transition">
+            Byte Supply
+        </a>
+    </div>
 
-            {% if current_user.is_authenticated %}
-                {% if current_user.role == 'manager' %}
-                    <a href="{{ url_for('admin_dashboard') }}">Manager Panel</a>
-                {% else %}
-                    <a href="{{ url_for('customer_dashboard') }}">My Account</a>
-                {% endif %}
-                <a href="{{ url_for('logout') }}">Logout</a>
+    <div class="nav-right flex items-center gap-6 text-sm">
+        <a href="{{ url_for('home') }}" class="text-slate-300 hover:text-white transition">Home</a>
+
+        {% if current_user.is_authenticated %}
+            {% if current_user.role == 'manager' %}
+                <a href="{{ url_for('admin_dashboard') }}" class="text-slate-300 hover:text-white transition">
+                    Manager Panel
+                </a>
             {% else %}
-                <a href="{{ url_for('register') }}">Register</a>
-                <a href="{{ url_for('login') }}">Login</a>
+                <a href="{{ url_for('customer_dashboard') }}" class="text-slate-300 hover:text-white transition">
+                    My Account
+                </a>
             {% endif %}
-        </div>
-    </nav>
+
+            <a href="{{ url_for('logout') }}" 
+               class="bg-sky-400 text-slate-900 px-3 py-1 rounded-md hover:bg-sky-500 transition font-medium">
+                Logout
+            </a>
+        {% else %}
+            <a href="{{ url_for('register') }}" class="text-slate-300 hover:text-white transition">
+                Register
+            </a>
+
+            <a href="{{ url_for('login') }}" 
+               class="bg-sky-400 text-slate-900 px-3 py-1 rounded-md hover:bg-sky-500 transition font-medium">
+                Login
+            </a>
+        {% endif %}
+    </div>
+</nav>
 
     <main class="container">
         {% with messages = get_flashed_messages(with_categories=true) %}
