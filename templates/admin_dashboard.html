@@ -1,9 +1,82 @@
 {% extends "base.html" %}
 
 {% block content %}
+<div class="card" style="margin-bottom: 30px;">
+    <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom: 20px;">
+        <h2 style="margin: 0;">Manager Dashboard</h2>
+        <a href="{{ url_for('add_product') }}" class="btn" style="text-decoration:none; padding: 10px 20px;">+ Add Product</a>
+    </div>
+
+    <h3 style="margin-bottom: 14px;">Products</h3>
+    <table style="width:100%; border-collapse: collapse; font-size: 0.9rem;">
+        <thead>
+            <tr style="border-bottom: 2px solid #e5e7eb; text-align: left; color: #6b7280;">
+                <th style="padding: 8px 0;">Name</th>
+                <th style="padding: 8px 0;">Price</th>
+                <th style="padding: 8px 0;">Stock</th>
+                <th style="padding: 8px 0; text-align:right;">Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for product in products %}
+            <tr style="border-bottom: 1px solid #f3f4f6;">
+                <td style="padding: 10px 0;">
+                    <div style="display:flex; align-items:center; gap:10px;">
+                        <img src="{{ url_for('static', filename=product.image) }}" width="36" height="36" style="object-fit:contain;">
+                        {{ product.name }}
+                    </div>
+                </td>
+                <td style="padding: 10px 0;">${{ "%.2f"|format(product.price) }}</td>
+                <td style="padding: 10px 0;">
+                    {% if product.stock == 0 %}
+                        <span style="color: #ef4444;">{{ product.stock }}</span>
+                    {% elif product.stock < 5 %}
+                        <span style="color: #f59e0b;">{{ product.stock }}</span>
+                    {% else %}
+                        <span style="color: #10b981;">{{ product.stock }}</span>
+                    {% endif %}
+                </td>
+                <td style="padding: 10px 0; text-align:right;">
+                    <a href="{{ url_for('edit_product', id=product.id) }}" style="color: #2563eb; margin-right: 12px; text-decoration:none; font-weight:bold;">Edit</a>
+                    <form action="{{ url_for('delete_product', id=product.id) }}" method="POST" style="display:inline;"
+                          onsubmit="return confirm('Delete {{ product.name }}?')">
+                        <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+                        <button type="submit" style="background:none; border:none; color:#ef4444; cursor:pointer; font-weight:bold;">Delete</button>
+                    </form>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+
 <div class="card">
-    <h2>Manager Dashboard</h2>
-    <p>Welcome, {{ current_user.email }}!</p>
-    <p>This protected page is for managing products, orders, and store information.</p>
+    <h3 style="margin-bottom: 14px;">All Orders</h3>
+    {% if orders %}
+        {% for order in orders %}
+        <div style="background: #f9fafb; border: 1px solid #e5e7eb; border-radius: 10px; padding: 16px; margin-bottom: 14px;">
+            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom: 8px;">
+                <div>
+                    <strong>Order #{{ order.id }}</strong>
+                    <span style="color: #6b7280; margin-left: 10px; font-size: 0.82rem;">{{ order.created_at.strftime('%B %d, %Y %I:%M %p') }}</span>
+                    <span style="color: #6b7280; margin-left: 10px; font-size: 0.82rem;">by {{ order.user.email }}</span>
+                </div>
+                <div>
+                    <span style="background: #dbeafe; color: #1e40af; padding: 3px 10px; border-radius: 20px; font-size: 0.78rem;">{{ order.status }}</span>
+                    <strong style="margin-left: 10px;">${{ "%.2f"|format(order.total_price) }}</strong>
+                </div>
+            </div>
+            <ul style="margin: 0; padding-left: 18px; color: #374151; font-size: 0.88rem;">
+                {% for item in order.items %}
+                <li>{{ item.product.name }} × {{ item.quantity }} @ ${{ "%.2f"|format(item.price_at_purchase) }}</li>
+                {% endfor %}
+            </ul>
+        </div>
+        {% endfor %}
+    {% else %}
+        <p style="color: #6b7280;">No orders yet.</p>
+    {% endif %}
 </div>
 {% endblock %}
+
+# Admin Dashboard, product management and complete order history for all customers

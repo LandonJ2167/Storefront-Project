@@ -1,0 +1,55 @@
+{% extends "base.html" %}
+{% block content %}
+
+<div class="card" style="max-width: 750px; margin: auto;">
+    <h2 style="margin-bottom: 20px;">Your Cart</h2>
+
+    {% if items %}
+        <table style="width:100%; border-collapse: collapse;">
+            <thead>
+                <tr style="border-bottom: 2px solid #e5e7eb; text-align: left;">
+                    <th style="padding: 10px 0;">Product</th>
+                    <th style="padding: 10px 0;">Price</th>
+                    <th style="padding: 10px 0;">Qty</th>
+                    <th style="padding: 10px 0;">Subtotal</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for item in items %}
+                <tr style="border-bottom: 1px solid #f3f4f6;">
+                    <td style="padding: 14px 0;">
+                        <div style="display:flex; align-items:center; gap:12px;">
+                            <img src="{{ url_for('static', filename=item.product.image) }}" width="48" height="48" style="object-fit:contain;">
+                            <span>{{ item.product.name }}</span>
+                        </div>
+                    </td>
+                    <td style="padding: 14px 0;">${{ "%.2f"|format(item.product.price) }}</td>
+                    <td style="padding: 14px 0;">{{ item.quantity }}</td>
+                    <td style="padding: 14px 0;">${{ "%.2f"|format(item.product.price * item.quantity) }}</td>
+                    <td style="padding: 14px 0; text-align:right;">
+                        <form action="{{ url_for('remove_from_cart', item_id=item.id) }}" method="POST">
+                            <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+                            <button type="submit" style="background:none; border:none; color:#ef4444; cursor:pointer; font-size:18px;" title="Remove">✕</button>
+                        </form>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+
+        <div style="margin-top: 24px; text-align: right;">
+            <p style="font-size: 1.2rem; font-weight: bold;">Total: ${{ "%.2f"|format(total) }}</p>
+            <form action="{{ url_for('checkout') }}" method="POST" style="display:inline;">
+                <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+                <button type="submit" class="btn" style="margin-top: 12px; padding: 14px 32px; font-size: 1rem;">
+                    Place Order
+                </button>
+            </form>
+        </div>
+    {% else %}
+        <p style="color: #6b7280;">Your cart is empty. <a href="{{ url_for('home') }}">Browse products</a></p>
+    {% endif %}
+</div>
+
+{% endblock %}
