@@ -68,7 +68,7 @@
             </div>
             <ul style="margin: 0; padding-left: 18px; color: #374151; font-size: 0.88rem;">
                 {% for item in order.items %}
-                <li>{{ item.product.name }} × {{ item.quantity }} @ ${{ "%.2f"|format(item.price_at_purchase) }}</li>
+                <li>{{ item.product_name }} × {{ item.quantity }} @ ${{ "%.2f"|format(item.price_at_purchase) }}</li>
                 {% endfor %}
             </ul>
         </div>

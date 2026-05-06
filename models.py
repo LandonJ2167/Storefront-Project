@@ -51,5 +51,6 @@ class OrderItem(db.Model):
     product_id = db.Column(db.Integer, db.ForeignKey("product.id"), nullable=False)
     quantity = db.Column(db.Integer, nullable=False)
     price_at_purchase = db.Column(db.Float, nullable=False)
+    product_name = db.Column(db.String(100), nullable=False)
 
     product = db.relationship("Product")

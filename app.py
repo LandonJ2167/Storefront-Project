@@ -58,6 +58,14 @@ def manager_required(f):
         return f(*args, **kwargs)
     return decorated
 
+def customer_required(f):
+    @wraps(f)
+    def decorated(*args, **kwargs):
+        if not current_user.is_authenticated or current_user.role != "customer":
+            abort(403)
+        return f(*args, **kwargs)
+    return decorated
+
 
 # Routes
 
@@ -128,6 +136,7 @@ def logout():
 
 @app.route("/cart")
 @login_required
+@customer_required
 def cart():
     items = CartItem.query.filter_by(user_id=current_user.id).all()
     total = sum(item.product.price * item.quantity for item in items)
@@ -136,6 +145,7 @@ def cart():
 
 @app.route("/cart/add/<int:product_id>", methods=["POST"])
 @login_required
+@customer_required
 def add_to_cart(product_id):
     product = Product.query.get_or_404(product_id)
     if product.stock == 0:
@@ -159,6 +169,7 @@ def add_to_cart(product_id):
 
 @app.route("/cart/remove/<int:item_id>", methods=["POST"])
 @login_required
+@customer_required
 def remove_from_cart(item_id):
     item = CartItem.query.get_or_404(item_id)
     if item.user_id != current_user.id:
@@ -171,6 +182,7 @@ def remove_from_cart(item_id):
 
 @app.route("/checkout", methods=["POST"])
 @login_required
+@customer_required
 def checkout():
     items = CartItem.query.filter_by(user_id=current_user.id).all()
     if not items:
@@ -193,7 +205,8 @@ def checkout():
             order_id=order.id,
             product_id=item.product_id,
             quantity=item.quantity,
-            price_at_purchase=item.product.price
+            price_at_purchase=item.product.price,
+            product_name=item.product.name
         ))
         item.product.stock -= item.quantity
         db.session.delete(item)
@@ -207,6 +220,7 @@ def checkout():
 
 @app.route("/customer-dashboard")
 @login_required
+@customer_required
 def customer_dashboard():
     orders = Order.query.filter_by(user_id=current_user.id).order_by(Order.created_at.desc()).all()
     return render_template("customer_dashboard.html", orders=orders)
